@@ -15,11 +15,7 @@ from typing import Any, Callable, Dict
 import jsonschema
 import yaml
 
-PACKAGE_ROOT = Path(__file__).resolve().parent
-if str(PACKAGE_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PACKAGE_ROOT.parent))
-
-from decision_model_package.validate_package import validate_package
+from .validate_package import validate_package
 
 ALLOWED_STATUSES = {"feasible", "optimal", "infeasible", "error"}
 

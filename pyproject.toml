@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rastion"
+version = "0.1.0"
+description = "Rastion Decision Model Package runner and validator"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["jsonschema", "PyYAML"]
+
+[project.scripts]
+decisionhub = "rastion.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "core"}
+
+[tool.setuptools.packages.find]
+where = ["core"]
+
+[tool.setuptools.package-data]
+"rastion.decision_model_package" = [
+  "schemas/*.json",
+  "schemas/*.yaml",
+  "schemas/*.yml",
+  "examples/**/*",
+]
