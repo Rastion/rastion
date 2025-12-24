@@ -1,6 +1,6 @@
 # Authoring a DMP v0.1: Quick Compliance Checklist
 
-This checklist summarizes the **MUST**-level invariants of the DMP v0.1 spec and highlights the failure modes seen in early implementations. It is intentionally concise—use it to validate that your package will run under the Rastion runner without custom changes.
+This checklist summarizes the MUST-level invariants of the DMP v0.1 spec and highlights common failure modes. It is intentionally concise—use it to validate that your package will run under the Rastion runner without custom changes.
 
 ## 1) Package layout (runner only inspects the root)
 
