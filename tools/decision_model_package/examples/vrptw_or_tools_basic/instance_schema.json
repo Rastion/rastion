@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VRPTW Instance",
+  "type": "object",
+  "required": [
+    "distance_matrix",
+    "time_windows",
+    "demands",
+    "vehicle_capacities",
+    "depot",
+    "num_vehicles"
+  ],
+  "properties": {
+    "distance_matrix": { "type": "array", "items": { "type": "array", "items": { "type": "integer" } } },
+    "time_windows": {
+      "type": "array",
+      "items": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 }
+    },
+    "demands": { "type": "array", "items": { "type": "integer" } },
+    "vehicle_capacities": { "type": "array", "items": { "type": "integer" } },
+    "depot": { "type": "integer" },
+    "num_vehicles": { "type": "integer" }
+  }
+}

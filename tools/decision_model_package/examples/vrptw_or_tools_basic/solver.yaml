@@ -1,0 +1,9 @@
+solver:
+  name: CP-SAT
+  backend: ortools
+  version: "9.8"
+parameters:
+  time_limit_seconds: 300
+output:
+  format: json
+  include_routes: true
