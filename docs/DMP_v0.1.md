@@ -9,6 +9,7 @@ This document defines the **Decision Model Package (DMP) v0.1** execution contra
 **Scope**
 - This specification defines the required files, interfaces, validation rules, execution flow, and output schema for a DMP v0.1 package.
 - DMP v0.1 is frozen; compliant packages MUST follow the requirements herein.
+- A compliant DMP v0.1 package MUST be portable across environments that implement this specification, independent of solver backend.
 
 **Non-Goals**
 - This specification does not define how to build, train, or optimize models.
@@ -143,6 +144,8 @@ The runner **MUST** emit a JSON object with the following top-level fields:
 | `solution` | object | Solution payload (see below). |
 | `solver` | object | Parsed `solver.yaml` content. |
 | `metadata` | object | Runner metadata (see below). |
+
+The internal structure of the `solution` object is model-defined and not interpreted by the runner.
 
 ### 7.1 Status Normalization
 
