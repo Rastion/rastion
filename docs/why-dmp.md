@@ -1,58 +1,54 @@
 # Why Decision Model Packages?
 
-## The current state of optimization model sharing
+## Purpose and scope
 
-Most optimization and decision models are shared as one of three artifacts: scripts and notebooks, academic papers, or solver-specific model files. Each of these is useful for a narrow purpose, but none provides a consistent, executable contract.
+Decision Model Packages (DMPs) and Rastion exist to address practical friction observed in real optimization work: models are difficult to run outside the original environment, results are hard to compare across teams, and audits often require reassembling missing assumptions. The design focuses on a minimal execution contract that makes models **reproducible**, **comparable**, and **auditable** without dictating how the model is written.
 
-* **Scripts and notebooks** bundle data loading, model construction, solver calls, and evaluation logic into a single, often environment-specific workflow. Small changes in data shape or runtime environment can break execution.
-* **Papers** describe models at a conceptual level, but rarely include the exact data contracts, preprocessing, and evaluation logic needed to run the model in another setting.
-* **Solver-specific formats** can capture the mathematical model but typically omit instance schemas, configuration, and evaluation steps.
+## Pain points in day-to-day optimization workflows
 
-As a result, reproducing results or benchmarking across models requires re-implementing large parts of the workflow, making comparisons slow and error-prone.
+Practitioners repeatedly encounter the same failure modes when trying to share or reuse models:
 
-## Why this is a structural problem
+* **Environment-coupled scripts**: model code is bundled with data loading, preprocessing, solver setup, and reporting. A small difference in runtime versions, file layout, or data shape breaks execution or silently changes results.
+* **Ambiguous inputs**: instance schemas are implicit or described in prose. Downstream users re-encode data and unknowingly change the meaning of constraints or objectives.
+* **Hidden solver knobs**: time limits, tolerances, and heuristics live in code or CLI flags. Two teams “run the same model” but get different feasibility or objective values.
+* **Unverifiable outputs**: post-processing and feasibility checks are custom, inconsistent, or undocumented, which makes audits and comparisons unreliable.
 
-The core issue is not missing documentation but entanglement between model logic, data contracts, solver choice, and evaluation. A model’s “code” often includes assumptions about:
+These are not documentation issues; they stem from a lack of a stable, machine-readable contract for how a model should be executed and evaluated.
 
-* **Input data schemas and preprocessing** (e.g., how instances are encoded, normalization, or filtering)
-* **Solver configuration** (time limits, tolerances, heuristics, callbacks)
-* **Evaluation and feasibility checks** (objective computation, constraint violations, post-processing)
+## Design rationale: a stable execution contract
 
-When these elements are intertwined, results cannot be reliably compared across teams or environments. Even small differences in instance interpretation or solver settings can change feasibility and objective values, invalidating comparisons.
-
-## What a Decision Model Package standardizes
-
-A Decision Model Package (DMP v0.1) defines a minimal execution contract that captures the operational interface of a decision model without prescribing how the model is built. It standardizes:
+A DMP standardizes the *interface* of a decision model rather than its formulation. It specifies:
 
 * **Model entry points**: explicit, callable interfaces for running a model on a given instance.
-* **Instance schemas**: machine-readable definitions of inputs, ensuring consistent data contracts.
-* **Solver configuration**: declared parameters and limits that affect execution and reproducibility.
+* **Instance schemas**: machine-readable definitions of inputs, so encoding is consistent across environments.
+* **Solver configuration**: declared parameters and limits that materially affect results.
 * **Evaluation and feasibility checks**: deterministic post-run logic to verify constraints and compute metrics.
 
-This package-level contract is designed to be stable and portable, so a model can be executed and evaluated consistently across environments. DMP standardizes how a model is executed and evaluated, not how it is formulated or solved.
+This contract makes it possible to reproduce results across environments, compare models on shared instances, and audit outcomes without reverse-engineering the original codebase.
 
-## What DMP explicitly does NOT try to solve
+## Implicit comparisons (without replacing existing tools)
 
-DMP is intentionally narrow in scope.
+DMPs are designed to complement existing practices rather than compete with them:
 
-* It is **not a solver**. It does not implement optimization algorithms.
-* It is **not a modeling language**. It does not replace existing modeling libraries or mathematical formulations.
-* It is **not a hosted service**. It defines a package format, not a deployment platform.
+* **Solver-specific scripts** remain useful for rapid iteration, but they tend to intertwine data handling, solver setup, and evaluation. DMPs separate these concerns so results survive changes in environment or tooling.
+* **Modeling languages** provide expressive formulations, yet they do not standardize instance schemas, execution parameters, or evaluation logic. DMPs add a reproducible wrapper around whatever formulation you choose.
+* **ML model packaging practices** improved reproducibility by moving from ad‑hoc scripts to explicit artifacts with declared inputs, configs, and evaluation hooks. DMPs apply the same packaging discipline to optimization models.
 
-## Why a frozen execution contract matters
+## What Rastion is NOT
 
-A stable execution contract enables workflows that are difficult with ad-hoc artifacts:
+Rastion is intentionally narrow in scope:
 
-* **Long-lived benchmarks**: models can be compared over time without re-implementing glue code.
-* **Reproducible experiments**: results can be rerun with the same inputs and declared settings.
-* **Stable downstream tooling**: evaluators, harnesses, and automated test suites can target a single contract.
+* **Not a solver**: it does not implement optimization algorithms.
+* **Not a modeling language**: it does not replace modeling libraries or mathematical formulations.
+* **Not a hosted platform**: it defines a package format and contract, not a deployment service.
+* **Not an auto-optimizer**: it does not tune or improve models on its own.
 
-## How this mirrors successful patterns in ML tooling
+## Why reproducibility, comparability, and auditability matter
 
-In machine learning, reproducibility and benchmarking improved when the community shifted from ad-hoc scripts to standardized artifacts and interfaces. The focus moved to portable, declarative packages with explicit inputs, configuration, and evaluation logic.
+Real-world optimization systems are often evaluated over long periods, across teams, and under regulatory or internal audit constraints. A frozen execution contract makes it possible to:
 
-Decision Model Packages adopt the same principle: prioritize artifacts and execution contracts over platforms. This allows independent teams to build compatible tooling and compare models without tightly coupling to a specific environment.
+* **Reproduce** past runs with the same inputs and declared settings.
+* **Compare** models fairly by controlling for data interpretation and solver configuration.
+* **Audit** outcomes by tracing how inputs, constraints, and evaluation rules produced a result.
 
-## Example
-
-In practice, this means that two teams can implement the same decision problem using different solvers or formulations, package them as DMPs, and obtain outputs that are directly comparable under a shared execution and evaluation contract.
+DMPs and Rastion focus on these operational guarantees, providing a consistent way to run, evaluate, and verify decision models without prescribing how they are built.
