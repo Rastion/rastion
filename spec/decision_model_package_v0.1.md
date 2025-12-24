@@ -1,6 +1,8 @@
 # Decision Model Package Specification v0.1
 
-**Status:** Draft
+**Status:** Stable
+
+Backward-compatibility guarantee: all tooling targeting Decision Model Package v0.1 MUST accept any valid v0.1 package without breaking changes.
 
 This specification defines the **Decision Model Package (DMP) v0.1** format for optimization models. A DMP is a self-contained directory containing a model implementation, input schema, solver configuration, evaluation utilities, and a decision card. The format is designed to remain extensible beyond VRPTW to any decision/optimization problem class.
 
@@ -71,6 +73,10 @@ def solve(model: ModelArtifacts, instance: Dict[str, Any], solver_config: Option
 - MUST define a top-level object schema.
 - MUST include `required` for mandatory instance fields.
 
+**Non-normative guidance:**
+- Instance schemas MUST be solver-agnostic.
+- Solver tuning belongs in `solver.yaml`, not in `instance_schema.json`.
+
 > See **Section 5.1** for the JSON Schema that validates `instance_schema.json` itself.
 
 ### 2.3 `solver.yaml`
@@ -80,6 +86,12 @@ def solve(model: ModelArtifacts, instance: Dict[str, Any], solver_config: Option
 **Requirements:**
 - MUST include a `solver` mapping with `name` and `backend`.
 - MAY include `parameters`, `output`, and `metadata`.
+
+**Semantics (non-normative):**
+- `solver.name` is a human-readable algorithm name.
+- `solver.backend` is the execution framework (e.g., `ortools`, `pyomo`).
+- `parameters` is free-form solver tuning.
+- `output` provides formatting hints only and MUST NOT affect correctness.
 
 > See **Section 5.2** for the YAML Schema that validates `solver.yaml`.
 
@@ -124,6 +136,10 @@ version: "1.0.0"
 problem_class: "VRPTW"
 decision_model_package_version: "0.1"
 license: "Apache-2.0"
+authors:
+  - name: "Author Name"
+tags:
+  - "routing"
 ---
 ```
 
@@ -359,6 +375,11 @@ version: "1.0.0"
 problem_class: "VRPTW"
 decision_model_package_version: "0.1"
 license: "Apache-2.0"
+authors:
+  - name: "Rastion"
+tags:
+  - "routing"
+  - "time-windows"
 ---
 
 # VRPTW OR-Tools Basic

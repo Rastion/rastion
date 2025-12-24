@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import re
 from pathlib import Path
 from typing import Iterable, Sequence
 
@@ -49,7 +50,10 @@ def parse_functions(path: Path) -> set[str]:
 def validate_functions(path: Path, required: set[str]) -> list[str]:
     available = parse_functions(path)
     missing = sorted(required - available)
-    return [f"{path.name} missing function: {name}" for name in missing]
+    if not missing:
+        return []
+    missing_list = ", ".join(missing)
+    return [f"{path.name} missing functions: {missing_list}"]
 
 
 def validate_instance_schema(path: Path) -> list[str]:
@@ -78,9 +82,51 @@ def validate_decision_card(path: Path) -> list[str]:
     front_matter = yaml.safe_load(parts[1])
     if not isinstance(front_matter, dict):
         return ["decision_card.md: YAML front matter must be a mapping"]
+
+    errors: list[str] = []
+    required_fields = [
+        "name",
+        "version",
+        "decision_model_package_version",
+        "problem_class",
+        "license",
+        "authors",
+        "tags",
+    ]
+    missing_fields = [field for field in required_fields if field not in front_matter]
+    if missing_fields:
+        errors.append(
+            "decision_card.md: missing required fields: " + ", ".join(missing_fields)
+        )
+
     if front_matter.get("decision_model_package_version") != "0.1":
-        return ["decision_card.md: decision_model_package_version must be '0.1'"]
-    return []
+        errors.append("decision_card.md: decision_model_package_version must be '0.1'")
+
+    version_value = front_matter.get("version")
+    if version_value is not None:
+        semver_pattern = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+        if not isinstance(version_value, str) or not semver_pattern.match(version_value):
+            errors.append("decision_card.md: version must be a semver-like string")
+
+    authors = front_matter.get("authors")
+    if authors is not None:
+        if not isinstance(authors, list) or not authors:
+            errors.append("decision_card.md: authors must be a non-empty list")
+        else:
+            for author in authors:
+                if not isinstance(author, dict) or not isinstance(author.get("name"), str):
+                    errors.append("decision_card.md: each author must include a name")
+                    break
+
+    tags = front_matter.get("tags")
+    if tags is not None:
+        if not isinstance(tags, list) or not tags:
+            errors.append("decision_card.md: tags must be a non-empty list")
+        else:
+            if not all(isinstance(tag, str) for tag in tags):
+                errors.append("decision_card.md: tags must be strings")
+
+    return errors
 
 
 def validate_package(root: Path) -> list[str]:
@@ -101,9 +147,20 @@ def validate_package(root: Path) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate a Decision Model Package v0.1")
     parser.add_argument("package_dir", type=Path, help="Path to package root")
+    parser.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
+    )
     args = parser.parse_args()
 
     errors = validate_package(args.package_dir)
+    ok = not errors
+    if args.format == "json":
+        print(json.dumps({"ok": ok, "errors": errors}))
+        return 0 if ok else 1
+
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
