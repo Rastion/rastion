@@ -29,7 +29,7 @@ A Decision Model Package (DMP v0.1) defines a minimal execution contract that ca
 * **Solver configuration**: declared parameters and limits that affect execution and reproducibility.
 * **Evaluation and feasibility checks**: deterministic post-run logic to verify constraints and compute metrics.
 
-This package-level contract is designed to be stable and portable, so a model can be executed and evaluated consistently across environments.
+This package-level contract is designed to be stable and portable, so a model can be executed and evaluated consistently across environments. DMP standardizes how a model is executed and evaluated, not how it is formulated or solved.
 
 ## What DMP explicitly does NOT try to solve
 
@@ -52,3 +52,7 @@ A stable execution contract enables workflows that are difficult with ad-hoc art
 In machine learning, reproducibility and benchmarking improved when the community shifted from ad-hoc scripts to standardized artifacts and interfaces. The focus moved to portable, declarative packages with explicit inputs, configuration, and evaluation logic.
 
 Decision Model Packages adopt the same principle: prioritize artifacts and execution contracts over platforms. This allows independent teams to build compatible tooling and compare models without tightly coupling to a specific environment.
+
+## Example
+
+In practice, this means that two teams can implement the same decision problem using different solvers or formulations, package them as DMPs, and obtain outputs that are directly comparable under a shared execution and evaluation contract.
