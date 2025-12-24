@@ -1,0 +1,9 @@
+solver:
+  name: Greedy List Scheduling
+  backend: python
+  version: "1.0"
+parameters:
+  approach: "Earliest start time for each job operation"
+output:
+  format: json
+  include_routes: true
