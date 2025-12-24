@@ -105,11 +105,13 @@ A package is valid only if all of the following are true:
 If any package validation rule fails, the runner **MUST** return an error result with the validation errors and **MUST NOT** attempt to run the model.
 
 ### 6.2 Instance Validation
-
-- The runner **MUST** validate `instance.json` against `instance_schema.json` using JSON Schema draft 2020-12.
-- Each validation error **MUST** be reported as a string prefixed with `"instance.json: "` followed by the JSON Schema error message.
-- If any validation errors are found, the runner **MUST** return an error result with `metadata.error_type = "DMP_INPUT_INVALID"`.
-
+- `instance_schema.json` **MUST** be a valid JSON Schema document and **MUST** declare its dialect using the `$schema` field.
+- The runner **MUST** support validation using the following dialects:
+  - "JSON Schema Draft-07"
+  - "JSON Schema Draft 2020-12"
+- The instance **MUST** be validated using the dialect declared in `$schema`.
+- Schemas declaring unsupported dialects **MUST** cause package validation failure.
+  
 ### 6.3 Decision Card Validation
 
 `decision_card.md` **MUST** include YAML front matter starting at the beginning of the file. The front matter:
