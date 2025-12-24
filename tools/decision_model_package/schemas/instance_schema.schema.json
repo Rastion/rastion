@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Decision Model Package Instance Schema",
+  "type": "object",
+  "required": ["$schema", "title", "type", "properties", "required"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema dialect used by the instance schema."
+    },
+    "$id": {
+      "type": "string",
+      "description": "Stable identifier for the instance schema."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable name of the instance schema."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the instance schema."
+    },
+    "type": {
+      "const": "object",
+      "description": "Instances must be JSON objects."
+    },
+    "properties": {
+      "type": "object",
+      "description": "Schema for each instance field.",
+      "additionalProperties": {
+        "$ref": "https://json-schema.org/draft/2020-12/schema"
+      }
+    },
+    "required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": {
+      "description": "Whether extra instance fields are allowed.",
+      "anyOf": [{ "type": "boolean" }, { "type": "object" }]
+    },
+    "definitions": {
+      "type": "object",
+      "description": "Reusable schema definitions."
+    },
+    "allOf": { "type": "array" },
+    "anyOf": { "type": "array" },
+    "oneOf": { "type": "array" },
+    "examples": { "type": "array" }
+  },
+  "additionalProperties": true
+}

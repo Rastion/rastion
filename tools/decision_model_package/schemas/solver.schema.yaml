@@ -1,0 +1,52 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "Decision Model Package Solver Configuration"
+type: object
+required:
+  - solver
+properties:
+  solver:
+    type: object
+    required:
+      - name
+      - backend
+    properties:
+      name:
+        type: string
+        description: "Solver name or algorithm identifier."
+      backend:
+        type: string
+        description: "Solver library or framework."
+      version:
+        type: string
+        description: "Solver version string."
+      class:
+        type: string
+        description: "Optional problem class tag (e.g., VRPTW, TSP)."
+      description:
+        type: string
+    additionalProperties: true
+  parameters:
+    type: object
+    description: "Solver-specific parameters."
+    additionalProperties: true
+  output:
+    type: object
+    description: "Output formatting hints."
+    properties:
+      format:
+        type: string
+        enum: [json, yaml, msgpack, text]
+      include_routes:
+        type: boolean
+      include_timing:
+        type: boolean
+      metrics:
+        type: array
+        items:
+          type: string
+    additionalProperties: true
+  metadata:
+    type: object
+    description: "Package-specific metadata."
+    additionalProperties: true
+additionalProperties: true
