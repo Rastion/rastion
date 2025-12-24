@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Package, BookOpen, Terminal, Github, Menu, X } from "lucide-react";
+import { BookOpen, Lightbulb, FileCode, Github, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const Header = () => {
@@ -8,9 +8,9 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: "/packages", label: "Packages", icon: Package },
-    { path: "/docs", label: "Docs", icon: BookOpen },
-    { path: "/cli", label: "CLI", icon: Terminal },
+    { path: "/concept", label: "Concept", icon: Lightbulb },
+    { path: "/examples", label: "Examples", icon: FileCode },
+    { path: "/get-started", label: "Get Started", icon: BookOpen },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -44,18 +44,15 @@ const Header = () => {
 
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="https://github.com/rastion"
+            href="https://github.com/Rastion/rastion"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="ghost" size="icon">
-              <Github className="h-5 w-5" />
+            <Button variant="outline" size="sm" className="gap-2">
+              <Github className="h-4 w-4" />
+              GitHub
             </Button>
           </a>
-          <Button variant="outline" size="sm">
-            Sign In
-          </Button>
-          <Button size="sm">Get Started</Button>
         </div>
 
         <Button
@@ -83,11 +80,17 @@ const Header = () => {
                 </Button>
               </Link>
             ))}
-            <div className="flex gap-2 pt-4 border-t border-border mt-2">
-              <Button variant="outline" className="flex-1">
-                Sign In
-              </Button>
-              <Button className="flex-1">Get Started</Button>
+            <div className="pt-4 border-t border-border mt-2">
+              <a
+                href="https://github.com/Rastion/rastion"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" className="w-full gap-2">
+                  <Github className="h-4 w-4" />
+                  GitHub
+                </Button>
+              </a>
             </div>
           </nav>
         </div>
