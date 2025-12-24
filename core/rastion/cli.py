@@ -15,7 +15,7 @@ def run_command(args: argparse.Namespace) -> int:
         print("Install with: pip install jsonschema PyYAML")
         return 1
 
-    from decision_model_package.runner import run_package
+    from .decision_model_package.runner import run_package
 
     result = run_package(Path(args.package_dir), Path(args.instance))
     payload = json.dumps(result, indent=2, sort_keys=True)
