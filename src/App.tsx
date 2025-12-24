@@ -4,10 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Packages from "./pages/Packages";
-import PackageDetail from "./pages/PackageDetail";
-import CLI from "./pages/CLI";
-import Docs from "./pages/Docs";
+import Concept from "./pages/Concept";
+import Examples from "./pages/Examples";
+import GetStarted from "./pages/GetStarted";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,10 +19,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/packages" element={<Packages />} />
-          <Route path="/packages/:slug" element={<PackageDetail />} />
-          <Route path="/cli" element={<CLI />} />
-          <Route path="/docs" element={<Docs />} />
+          <Route path="/concept" element={<Concept />} />
+          <Route path="/examples" element={<Examples />} />
+          <Route path="/get-started" element={<GetStarted />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
