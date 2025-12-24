@@ -1,22 +1,22 @@
 # Rastion
 
-## What is Rastion?
+Rastion is an execution standard and Python CLI for Decision Model Packages as defined by the DMP v0.1 specification.
 
-Rastion is a Python CLI tool for running Decision Model Packages (DMP v0.1), a standardized format for optimization and decision models. It provides a reproducible execution contract so model code, inputs, and solver configuration can be validated and run consistently.
+## What Rastion is
 
-The goal is to make optimization runs portable and auditable: the package declares the model entry points, schema for instances, solver settings, and evaluation logic, and the CLI executes them with structured JSON output.
+- A reproducible execution contract for decision/optimization models that validates inputs, runs model entry points, and emits structured JSON output.
+- A reference runner and schema validator for DMP v0.1 packages (see the [DMP v0.1 specification](docs/DMP_v0.1.md)).
+- A portability layer that makes model runs auditable and consistent across environments.
 
-## What is a Decision Model Package (DMP)?
+## What Rastion is not
 
-A Decision Model Package is a self-contained directory that bundles an optimization model implementation with its input schema, solver configuration, and evaluation logic. DMP v0.1 defines the minimum files and entry points needed to validate and run a model end-to-end.
+- A modeling framework or solver; it executes packages built with your chosen tools.
+- A proprietary package format; DMP v0.1 is an open, frozen spec.
+- A benchmarking harness; any benchmarking conventions are optional add-ons.
 
-Required files in a DMP v0.1 package:
+## Decision Model Package (DMP)
 
-- `model.py`
-- `instance_schema.json`
-- `solver.yaml`
-- `evaluate.py`
-- `decision_card.md`
+A Decision Model Package is a self-contained directory that bundles model code, input schemas, solver configuration, and evaluation logic. For the required files and interfaces, see the [DMP v0.1 specification](docs/DMP_v0.1.md) and the [authoring checklist](docs/authoring_a_dmp.md).
 
 ## Installation
 
@@ -33,29 +33,20 @@ Python requirement: 3.10+
 
 ## Quick Start
 
-Run the included Knapsack example with the `decisionhub` CLI:
-
-```sh
-decisionhub run core/rastion/decision_model_package/examples/knapsack_basic \
-  --instance core/rastion/decision_model_package/examples/knapsack_basic/instance.json
-```
+Use the `decisionhub` CLI to run a DMP package. See [example packages](core/rastion/decision_model_package/examples) and the [runner reference](core/rastion/decision_model_package/README.md) for command details.
 
 ## Output Format
 
-`decisionhub run` emits a structured JSON document with consistent fields. The top-level output includes:
-
-- `status` and `feasible` to indicate solution feasibility
-- `objective` and `runtime_seconds` for performance metrics
-- `metadata` for solver and evaluation details (including timings and solver-reported metrics)
+`decisionhub run` emits a structured JSON document with consistent fields such as `status`, `feasible`, `objective`, and `runtime_seconds`. The full output schema is defined in the [DMP v0.1 specification](docs/DMP_v0.1.md).
 
 ## Included Examples
 
-- VRPTW (routing): `core/rastion/decision_model_package/examples/vrptw_or_tools_basic`
-- Knapsack (selection): `core/rastion/decision_model_package/examples/knapsack_basic`
+- [VRPTW (routing)](core/rastion/decision_model_package/examples/vrptw_or_tools_basic)
+- [Knapsack (selection)](core/rastion/decision_model_package/examples/knapsack_basic)
 
 ## Project Status
 
-Rastion v0.1.0. The Decision Model Package (DMP v0.1) execution contract is frozen; new features will be additive.
+Rastion v0.1.0. The DMP v0.1 execution contract is frozen; new features will be additive.
 
 ## License
 
