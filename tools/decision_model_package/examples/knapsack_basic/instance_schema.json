@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Knapsack Instance",
+  "type": "object",
+  "required": ["weights", "values", "capacity"],
+  "properties": {
+    "weights": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+    "values": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+    "capacity": { "type": "integer", "minimum": 0 }
+  }
+}
