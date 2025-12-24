@@ -1,0 +1,26 @@
+{
+  "machines": ["M1", "M2", "M3"],
+  "jobs": [
+    {
+      "operations": [
+        { "machine": "M1", "duration": 3 },
+        { "machine": "M2", "duration": 2 },
+        { "machine": "M3", "duration": 2 }
+      ]
+    },
+    {
+      "operations": [
+        { "machine": "M2", "duration": 2 },
+        { "machine": "M3", "duration": 1 },
+        { "machine": "M1", "duration": 4 }
+      ]
+    },
+    {
+      "operations": [
+        { "machine": "M3", "duration": 4 },
+        { "machine": "M1", "duration": 3 },
+        { "machine": "M2", "duration": 1 }
+      ]
+    }
+  ]
+}
