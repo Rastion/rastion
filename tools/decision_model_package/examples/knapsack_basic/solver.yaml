@@ -1,0 +1,9 @@
+solver:
+  name: Dynamic Programming
+  backend: python
+  version: "1.0"
+parameters:
+  approach: "0/1 knapsack DP"
+output:
+  format: json
+  include_routes: true
