@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rastion.ai/dmp/anchor-proof/knapsack-instance.schema.json",
+  "title": "Knapsack Instance",
+  "description": "Instance schema for a simple 0/1 knapsack problem.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable instance name."
+    },
+    "capacity": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Maximum total weight."
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "weight", "value"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["capacity", "items"],
+  "additionalProperties": false
+}

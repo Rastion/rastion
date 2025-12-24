@@ -1,0 +1,51 @@
+{
+  "feasible": true,
+  "metadata": {
+    "evaluation": {
+      "metrics": {
+        "selected_count": 3,
+        "solve_runtime_seconds": 3.0962999971961835e-05,
+        "total_weight": 12
+      },
+      "runtime": null
+    },
+    "runner": {
+      "evaluate_seconds": 2.976399991894141e-05,
+      "solve_seconds": 3.0962999971961835e-05
+    },
+    "solve": {
+      "metrics": null,
+      "objective": 17.0,
+      "runtime_seconds": null,
+      "status": "feasible"
+    }
+  },
+  "objective": 17,
+  "runtime_seconds": 0.010507837000204745,
+  "solution": {
+    "selected_item_ids": [
+      "item-e",
+      "item-c",
+      "item-a"
+    ]
+  },
+  "solver": {
+    "metadata": {
+      "package": "anchor-proof"
+    },
+    "output": {
+      "format": "json",
+      "include_timing": true
+    },
+    "parameters": {},
+    "solver": {
+      "backend": "python",
+      "class": "knapsack",
+      "description": "Deterministic greedy selection by value-to-weight ratio.",
+      "name": "greedy-knapsack",
+      "version": "1.0"
+    }
+  },
+  "status": "feasible",
+  "violations": []
+}

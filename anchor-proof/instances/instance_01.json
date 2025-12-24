@@ -1,0 +1,11 @@
+{
+  "name": "small-knapsack-01",
+  "capacity": 15,
+  "items": [
+    {"id": "item-a", "weight": 3, "value": 4},
+    {"id": "item-b", "weight": 4, "value": 5},
+    {"id": "item-c", "weight": 7, "value": 10},
+    {"id": "item-d", "weight": 8, "value": 11},
+    {"id": "item-e", "weight": 2, "value": 3}
+  ]
+}

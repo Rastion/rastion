@@ -1,0 +1,12 @@
+solver:
+  name: greedy-knapsack
+  backend: python
+  version: "1.0"
+  class: knapsack
+  description: "Deterministic greedy selection by value-to-weight ratio."
+parameters: {}
+output:
+  format: json
+  include_timing: true
+metadata:
+  package: anchor-proof
