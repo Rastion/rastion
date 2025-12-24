@@ -51,6 +51,8 @@ def solve(model: ModelArtifacts, instance: Dict[str, Any], solver_config: Option
     """Solve the model and return a JSON-serializable solution object."""
 ```
 
+Tooling does not enforce function signatures in v0.1; only function names are required. Argument structure is intentionally flexible.
+
 **Expected inputs:**
 - `instance`: A JSON object validated against `instance_schema.json`.
 - `solver_config`: Parsed content of `solver.yaml` (optional, may be `None`).
@@ -153,7 +155,8 @@ tags:
 
 ## 3. Error Handling Conventions
 
-- `create_model`, `solve`, and `evaluate` MUST raise exceptions (e.g., `ValueError`) for invalid input or internal failures.
+- `create_model`, `solve`, and `evaluate` MAY raise exceptions (e.g., `ValueError`) for unrecoverable internal failures.
+- Infeasibility MUST be represented via returned status, not exceptions.
 - Error messages SHOULD be structured with a short code prefix, e.g. `"DMP_INPUT_INVALID: ..."`.
 - When returning structured results, `solve` and `evaluate` SHOULD include a top-level `errors` list containing objects:
   - `code` (string)
