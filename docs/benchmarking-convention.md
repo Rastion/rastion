@@ -54,6 +54,8 @@ for instance_dir in benchmarks/<benchmark-name>/instances/*; do
 done
 ```
 
+Benchmark orchestration MUST NOT rely on shared state, inter-run communication, or any behavior other than invoking the existing CLI once per instance.
+
 - The CLI invocation is unchanged.
 - `--output` remains a single per-run JSON file.
 - `run-id` can be a timestamp, git SHA, or any external identifier.
