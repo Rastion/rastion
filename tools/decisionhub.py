@@ -29,7 +29,7 @@ def run_command(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Rastion CLI")
+    parser = argparse.ArgumentParser(description="Rastion CLI (Decision Model Package v0.1 runner)")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     run_parser = subparsers.add_parser("run", help="Run a Decision Model Package v0.1")
