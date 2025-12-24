@@ -1,73 +1,62 @@
-# Welcome to your Lovable project
+# Rastion
 
-## Project info
+## What is Rastion?
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Rastion is a Python CLI tool for running Decision Model Packages (DMP v0.1), a standardized format for optimization and decision models. It provides a reproducible execution contract so model code, inputs, and solver configuration can be validated and run consistently.
 
-## How can I edit this code?
+The goal is to make optimization runs portable and auditable: the package declares the model entry points, schema for instances, solver settings, and evaluation logic, and the CLI executes them with structured JSON output.
 
-There are several ways of editing your application.
+## What is a Decision Model Package (DMP)?
 
-**Use Lovable**
+A Decision Model Package is a self-contained directory that bundles an optimization model implementation with its input schema, solver configuration, and evaluation logic. DMP v0.1 defines the minimum files and entry points needed to validate and run a model end-to-end.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Required files in a DMP v0.1 package:
 
-Changes made via Lovable will be committed automatically to this repo.
+- `model.py`
+- `instance_schema.json`
+- `solver.yaml`
+- `evaluate.py`
+- `decision_card.md`
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+pip install rastion
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# or, for development / examples:
+git clone https://github.com/Rastion/rastion.git
+cd rastion
+pip install -e .
 ```
 
-**Edit a file directly in GitHub**
+Python requirement: 3.10+
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Quick Start
 
-**Use GitHub Codespaces**
+Run the included Knapsack example with the `decisionhub` CLI:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```sh
+decisionhub run core/rastion/decision_model_package/examples/knapsack_basic \
+  --instance core/rastion/decision_model_package/examples/knapsack_basic/instance.json
+```
 
-## What technologies are used for this project?
+## Output Format
 
-This project is built with:
+`decisionhub run` emits a structured JSON document with consistent fields. The top-level output includes:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `status` and `feasible` to indicate solution feasibility
+- `objective` and `runtime_seconds` for performance metrics
+- `metadata` for solver and evaluation details (including timings and solver-reported metrics)
 
-## How can I deploy this project?
+## Included Examples
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- VRPTW (routing): `core/rastion/decision_model_package/examples/vrptw_or_tools_basic`
+- Knapsack (selection): `core/rastion/decision_model_package/examples/knapsack_basic`
 
-## Can I connect a custom domain to my Lovable project?
+## Project Status
 
-Yes, you can!
+Rastion v0.1.0. The Decision Model Package (DMP v0.1) execution contract is frozen; new features will be additive.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Apache-2.0
