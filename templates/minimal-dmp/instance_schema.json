@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["value"],
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "Single numeric input used by the minimal template."
+    }
+  },
+  "additionalProperties": false
+}
