@@ -1,0 +1,4 @@
+solver:
+  name: "minimal-example"
+  backend: "manual"
+  # Optional fields (version, class, description) are omitted on purpose.
