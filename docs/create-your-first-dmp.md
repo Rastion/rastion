@@ -22,18 +22,19 @@ A DMP is a small, fixed set of files at a package root that the runner validates
 <package-root>/
   model.py              # Required: wraps your model in create_model/solve
   evaluate.py           # Required: post-solve evaluation and feasibility
-  instance_schema.json  # Required: JSON Schema for instance.json inputs
+  instance_schema.json  # Required: JSON Schema for inputs supplied via --instance
   solver.yaml           # Required: declarative solver configuration
   decision_card.md      # Required: metadata front matter
 ```
 
 Only these files are required. Extra files are allowed, but the runner ignores them.
+Instance files are supplied externally via `--instance`; they are not required at the package root.
 
 ## Step-by-step authoring
 
 ### 1) Freeze inputs (schema)
 
-Define the instance shape you will accept. This is the contract for `instance.json`.
+Define the instance shape you will accept. This is the contract for inputs supplied via `--instance` (the file name can vary and does not live in the package root).
 
 Minimal example:
 
@@ -84,6 +85,20 @@ solver:
   backend: "manual"
 ```
 
+The full solver schema is defined in `core/rastion/decision_model_package/schemas/solver.schema.yaml`.
+
+Example with parameters:
+
+```yaml
+solver:
+  name: "or-tools"
+  backend: "ortools"
+  version: "9.7"
+parameters:
+  time_limit_seconds: 10
+  threads: 4
+```
+
 Why this file exists: the runner loads and includes this configuration in the run output.
 
 ### 4) Separate evaluation (evaluate.py)
@@ -103,7 +118,7 @@ def check_feasibility(solution, instance):
     return []
 ```
 
-check_feasibility must exist and be callable, but its return value is not interpreted by the runner in v0.1.
+check_feasibility must exist and be callable for contract completeness and future tooling, but its return value is not interpreted by the runner in v0.1. A recommended convention is to return a list of violation strings (empty list if feasible).
 
 Why this file exists: the runner uses it to compute feasibility and objective metrics after solve.
 

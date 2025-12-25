@@ -19,7 +19,7 @@ This document defines the **Decision Model Package (DMP) v0.1** execution contra
 ## 2. Terminology
 
 - **Package Root**: The directory that contains the required DMP files.
-- **Instance**: The JSON object provided as `instance.json`, validated against `instance_schema.json`.
+- **Instance**: The JSON object supplied to the runner via a CLI flag (commonly named `instance.json`), validated against `instance_schema.json`.
 - **Solver Configuration**: The YAML mapping loaded from `solver.yaml`.
 - **Runner**: The reference DMP v0.1 execution engine that validates and runs a package.
 - **Result**: The JSON object emitted by the runner after execution.
@@ -39,6 +39,17 @@ decision_card.md
 ```
 
 Additional files or subdirectories **MAY** exist, but the runner ignores them.
+An instance file is **not** part of the package; instances are supplied externally (see Section 3.1).
+
+### 3.1 Instance Location (external input)
+
+Instances are provided by the caller via a CLI flag (canonical: `decisionhub run --instance <path>`). A DMP package does **NOT** require an `instance.json` file at the package root.
+
+Example:
+
+```sh
+decisionhub run /path/to/package --instance /path/to/instances/example.json --output result.json
+```
 
 ## 4. Required Interfaces
 
@@ -73,13 +84,15 @@ Additional files or subdirectories **MAY** exist, but the runner ignores them.
 - `evaluate` **MAY** accept additional parameters. The runner passes only supported keyword arguments based on the function signature.
 - `evaluate` **MUST** return a JSON-serializable object, and it **MUST** be a dictionary. If it does not, the runner **MUST** return an error result with `status = "error"`.
 
+`check_feasibility` exists for contract completeness and future tooling (e.g., external validators). The v0.1 runner does not call it. Implementers **SHOULD** return a list of violation strings (empty list when feasible), but the runner ignores its return value.
+
 ## 5. Execution Flow (step-by-step, fixed order)
 
 The runner **MUST** execute the following steps in order:
 
 1. **Validate package** using the package validation rules (Section 6).
 2. **Load solver configuration** by parsing `solver.yaml` as YAML.
-3. **Load instance** by parsing `instance.json` as JSON.
+3. **Load instance** by parsing the JSON file provided to the runner (e.g., via `--instance`).
 4. **Validate instance** against `instance_schema.json` using JSON Schema draft 2020-12.
 5. **Import** `model.py` and `evaluate.py` as modules.
 6. **Call** `create_model(instance, solver_config)` with supported keyword arguments.
@@ -100,7 +113,7 @@ A package is valid only if all of the following are true:
 - `evaluate.py` defines both `evaluate` and `check_feasibility` as top-level functions.
 - `instance_schema.json` validates against the DMP v0.1 **instance schema meta-schema** (JSON Schema draft 2020-12) located at `core/rastion/decision_model_package/schemas/instance_schema.schema.json`.
 - `solver.yaml` validates against the DMP v0.1 **solver schema** located at `core/rastion/decision_model_package/schemas/solver.schema.yaml`.
-- `decision_card.md` contains YAML front matter and satisfies the rules in Section 6.3.
+- `decision_card.md` contains YAML front matter and satisfies the rules in Section 6.4.
 
 If any package validation rule fails, the runner **MUST** return an error result with the validation errors and **MUST NOT** attempt to run the model.
 
@@ -112,7 +125,35 @@ If any package validation rule fails, the runner **MUST** return an error result
 - The instance **MUST** be validated using the dialect declared in `$schema`.
 - Schemas declaring unsupported dialects **MUST** cause package validation failure.
   
-### 6.3 Decision Card Validation
+### 6.3 Solver Schema Reference (discoverable)
+
+The authoritative solver schema lives at:
+
+- `core/rastion/decision_model_package/schemas/solver.schema.yaml`
+
+At minimum, `solver.yaml` **MUST** include `solver.name` and `solver.backend`. Two validated examples:
+
+Minimal `solver.yaml`:
+
+```yaml
+solver:
+  name: "example-solver"
+  backend: "manual"
+```
+
+With parameters:
+
+```yaml
+solver:
+  name: "or-tools"
+  backend: "ortools"
+  version: "9.7"
+parameters:
+  time_limit_seconds: 10
+  threads: 4
+```
+
+### 6.4 Decision Card Validation
 
 `decision_card.md` **MUST** include YAML front matter starting at the beginning of the file. The front matter:
 
@@ -148,6 +189,26 @@ The runner **MUST** emit a JSON object with the following top-level fields:
 | `metadata` | object | Runner metadata (see below). |
 
 The internal structure of the `solution` object is model-defined and not interpreted by the runner.
+
+### 7.0 Minimum Required Outputs
+
+The minimum expectations for outputs are:
+
+- `solve()` **MUST** return a dictionary. It **MAY** include:
+  - `solution` (object): preferred solution payload.
+  - `status` (string): one of `feasible`, `optimal`, `infeasible`, `error`.
+  - `objective` (number): objective value.
+- `evaluate()` **MUST** return a dictionary. It **SHOULD** include:
+  - `feasible` (boolean): feasibility determination.
+  - `objective` (number, recommended): objective value computed from the solution.
+  - `violations` (array of strings, optional).
+
+Deterministic precedence rules (implemented by the runner) are:
+
+- `solution` payload uses `solve.solution` if present; otherwise it uses the entire `solve` return dictionary (Section 7.2).
+- `objective` uses `evaluate.objective` if present; otherwise `solve.objective`.
+- `status` is normalized from `solve.status` and `evaluate.feasible` (Section 7.1).
+- `feasible` uses `evaluate.feasible` if present; otherwise it is derived from `status`.
 
 ### 7.1 Status Normalization
 
