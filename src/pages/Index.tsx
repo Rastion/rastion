@@ -1,194 +1,230 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import CodeBlock from "@/components/ui/CodeBlock";
-import { 
-  Terminal, 
-  Github,
-  ArrowRight,
-  CheckCircle2
-} from "lucide-react";
+import { Github, ExternalLink } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden gradient-hero">
-          <div className="absolute inset-0 grid-pattern opacity-50" />
-          <div className="container relative py-20 md:py-28">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 animate-fade-in">
-                Rastion
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-4 animate-fade-in">
-                A Python CLI for running Decision Model Packages.
-              </p>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in">
-                Rastion provides a reproducible execution contract for optimization and decision models. 
-                Package your model code, inputs, solver configuration, and evaluation logic—then run it consistently anywhere.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up">
-                <a
-                  href="https://github.com/Rastion/rastion"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button size="lg" className="gap-2 w-full sm:w-auto">
-                    <Github className="h-4 w-4" />
-                    View on GitHub
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </a>
-                <Link to="/get-started">
-                  <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto">
-                    <Terminal className="h-4 w-4" />
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            </div>
+    <div className="min-h-screen bg-background">
+      {/* Minimal Header */}
+      <header className="border-b border-border">
+        <div className="max-w-3xl mx-auto px-6 py-6">
+          <h1 className="text-2xl font-semibold tracking-tight">Rastion</h1>
+          <p className="text-muted-foreground mt-1">
+            A reproducible execution standard for decision models
+          </p>
+        </div>
+      </header>
 
-            {/* CLI Demo */}
-            <div className="mt-16 max-w-3xl mx-auto animate-fade-in-up">
-              <CodeBlock
-                filename="terminal"
-                code={`$ decisionhub run core/rastion/decision_model_package/examples/knapsack_basic \\
-    --instance core/rastion/decision_model_package/examples/knapsack_basic/instance.json
+      <main className="max-w-3xl mx-auto px-6 py-12 space-y-16">
+        {/* Section 1: The Problem */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">The Problem</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              Decision models are easy to write but hard to reproduce, compare, and audit.
+            </p>
+            <p>
+              Models are shared as scripts, notebooks, or papers. Data assumptions, solver 
+              configurations, and evaluation logic get mixed together. Even the original 
+              author often cannot reproduce results months later.
+            </p>
+            <p>
+              There is no standard way to package a decision model so that someone else 
+              can run it and get the same answer.
+            </p>
+          </div>
+        </section>
 
-✓ Loading instance...
-✓ Solver: OR-Tools
-✓ Status: Feasible
-✓ Objective: 220
-✓ Runtime: 0.02s`}
-              />
+        {/* Section 2: The Core Idea */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">The Core Idea</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              Decision models need a machine-checkable execution contract. Similar to how 
+              machine learning moved from ad-hoc scripts to reproducible artifacts (containers, 
+              model cards, standardized formats), optimization models need the same discipline.
+            </p>
+            <p>
+              This leads to the concept of a <strong className="text-foreground">Decision Model Package (DMP)</strong>—a 
+              self-contained directory that bundles model code, input schema, solver 
+              configuration, and evaluation logic into a single, validatable unit.
+            </p>
+            <div className="border-l-2 border-border pl-4 mt-6 space-y-2">
+              <p className="text-foreground font-medium">Rastion is not a solver.</p>
+              <p className="text-foreground font-medium">Rastion is not a modeling language.</p>
+              <p>Rastion sits above existing tools. It defines a frozen execution contract 
+                so that independent parties can run the same model, compare results, and 
+                audit assumptions—without re-implementing glue code or trusting undocumented defaults.</p>
             </div>
           </div>
         </section>
 
-        {/* What is a Decision Model Package? */}
-        <section className="py-16 md:py-20">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                What is a Decision Model Package?
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                A Decision Model Package (DMP v0.1) is a self-contained directory that bundles an 
-                optimization model with its input schema, solver configuration, and evaluation logic. 
-                It defines the minimum files and entry points needed to validate and run a model end-to-end.
-              </p>
-              
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">Required files in a DMP v0.1 package:</h3>
-                <ul className="space-y-3">
-                  {[
-                    { file: "model.py", desc: "Optimization model implementation" },
-                    { file: "instance_schema.json", desc: "Data contract with units" },
-                    { file: "solver.yaml", desc: "Solver and parameter configuration" },
-                    { file: "evaluate.py", desc: "Feasibility, objective, and runtime checks" },
-                    { file: "decision_card.md", desc: "Assumptions, constraints, and license" },
-                  ].map(({ file, desc }) => (
-                    <li key={file} className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <code className="text-sm bg-muted px-2 py-1 rounded font-mono">{file}</code>
-                        <span className="text-muted-foreground ml-2">— {desc}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* Section 3: What Exists Today */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">What Exists Today</h2>
+          <ul className="space-y-3 text-muted-foreground">
+            <li className="flex items-start gap-3">
+              <span className="text-foreground font-medium shrink-0">DMP v0.1:</span>
+              <span>A frozen package specification defining required files and interfaces</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-foreground font-medium shrink-0">Rastion CLI:</span>
+              <span>Validates a DMP, executes it, and emits structured JSON output</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-foreground font-medium shrink-0">Offline validation:</span>
+              <span>Schema checking without executing solver code</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-foreground font-medium shrink-0">Stable output schema:</span>
+              <span>Consistent fields: status, feasible, objective, runtime_seconds</span>
+            </li>
+          </ul>
+        </section>
 
-              <h3 className="text-lg font-semibold mb-4">Why reproducible execution matters</h3>
-              <p className="text-muted-foreground">
-                Optimization models are notoriously hard to reproduce. Solver versions, parameter settings, 
-                and input formats all affect results. Rastion enforces a standard structure so that anyone 
-                can run your model and get consistent, auditable outcomes—whether for benchmarking, 
-                collaboration, or deployment.
-              </p>
+        {/* Section 4: The Anchor Proof */}
+        <section className="border border-border rounded-md p-6 bg-muted/30">
+          <h2 className="text-xl font-semibold mb-4">The Anchor Proof</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              The <code className="text-sm bg-muted px-1.5 py-0.5 rounded">anchor-proof/</code> directory 
+              contains a third-party Decision Model Package, written independently, validated and 
+              executed using only public tooling.
+            </p>
+            <ul className="space-y-2 ml-4">
+              <li>• No changes to the runner</li>
+              <li>• No changes to the spec</li>
+              <li>• Batch execution works</li>
+            </ul>
+            <p className="text-foreground font-medium mt-4">
+              This is not a demo. This is a witness.
+            </p>
+            <div className="mt-4">
+              <a
+                href="https://github.com/Rastion/rastion/tree/main/anchor-proof"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-foreground hover:underline"
+              >
+                View anchor-proof on GitHub
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Output Format */}
-        <section className="py-16 md:py-20 bg-muted/30">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                Output Format
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                <code className="bg-muted px-1.5 py-0.5 rounded">decisionhub run</code> emits a structured JSON document with consistent fields:
-              </p>
-              <ul className="space-y-2 text-muted-foreground mb-6">
-                <li>• <code className="bg-muted px-1.5 py-0.5 rounded">status</code> and <code className="bg-muted px-1.5 py-0.5 rounded">feasible</code> to indicate solution feasibility</li>
-                <li>• <code className="bg-muted px-1.5 py-0.5 rounded">objective</code> and <code className="bg-muted px-1.5 py-0.5 rounded">runtime_seconds</code> for performance metrics</li>
-                <li>• <code className="bg-muted px-1.5 py-0.5 rounded">metadata</code> for solver and evaluation details (including timings and solver-reported metrics)</li>
-              </ul>
+        {/* Section 5: What Rastion Does NOT Do */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">What Rastion Does NOT Do</h2>
+          <ul className="space-y-2 text-muted-foreground">
+            <li>• Does not host models</li>
+            <li>• Does not benchmark solvers</li>
+            <li>• Does not tune or optimize models</li>
+            <li>• Does not provide dashboards or registries</li>
+            <li>• Does not abstract optimization itself</li>
+          </ul>
+          <p className="mt-4 text-muted-foreground">
+            This restraint is intentional. Rastion is a contract, not a platform.
+          </p>
+        </section>
+
+        {/* Section 6: Try It in 10 Minutes */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Try It in 10 Minutes</h2>
+          
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">1. Clone the repository</p>
+              <CodeBlock code="git clone https://github.com/Rastion/rastion.git
+cd rastion" />
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">2. Install Rastion</p>
+              <CodeBlock code="pip install -e ." />
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">3. Validate a minimal DMP</p>
+              <CodeBlock code="decisionhub validate core/rastion/decision_model_package/examples/knapsack_basic" />
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">4. Run it</p>
+              <CodeBlock code="decisionhub run core/rastion/decision_model_package/examples/knapsack_basic \
+    --instance core/rastion/decision_model_package/examples/knapsack_basic/instance.json" />
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">5. Inspect the JSON output</p>
+              <CodeBlock code={`{
+  "status": "optimal",
+  "feasible": true,
+  "objective": 220,
+  "runtime_seconds": 0.02
+}`} />
             </div>
           </div>
         </section>
 
-        {/* Included Examples */}
-        <section className="py-16 md:py-20">
-          <div className="container">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                Included Examples
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Rastion ships with example Decision Model Packages to help you get started:
-              </p>
-              
-              <div className="space-y-6">
-                <div className="p-4 border border-border rounded-lg">
-                  <h3 className="font-semibold mb-2">VRPTW (Vehicle Routing Problem with Time Windows)</h3>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    A classic routing problem that schedules vehicle routes to serve customers within time windows.
-                  </p>
-                  <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
-                    core/rastion/decision_model_package/examples/vrptw_or_tools_basic
-                  </code>
-                </div>
-
-                <div className="p-4 border border-border rounded-lg">
-                  <h3 className="font-semibold mb-2">Knapsack</h3>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    A selection problem: choose items to maximize value while staying within a weight limit.
-                  </p>
-                  <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
-                    core/rastion/decision_model_package/examples/knapsack_basic
-                  </code>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Section 7: Who This Is For */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Who This Is For</h2>
+          <ul className="space-y-2 text-muted-foreground">
+            <li>• Optimization researchers needing reproducible baselines</li>
+            <li>• Applied operations research teams sharing models across environments</li>
+            <li>• Benchmark authors publishing comparable results</li>
+            <li>• Auditors and reviewers verifying model behavior</li>
+            <li>• Anyone comparing decision models across environments</li>
+          </ul>
         </section>
 
-        {/* Project Status */}
-        <section className="py-16 md:py-20 bg-muted/30">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                Project Status
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Rastion v0.1.0. The Decision Model Package (DMP v0.1) execution contract is frozen; 
-                new features will be additive.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                License: Apache-2.0
-              </p>
-            </div>
+        {/* Section 8: Contribution Philosophy */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Contribution Philosophy</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              Contributions are welcome. The primary goal is strengthening the execution contract.
+            </p>
+            <p>
+              If someone can break reproducibility, that is a bug, not a failure.
+            </p>
+            <p className="font-medium text-foreground">Issues that help most:</p>
+            <ul className="space-y-2 ml-4">
+              <li>• Finding ambiguities in the spec</li>
+              <li>• Exposing nondeterminism in execution</li>
+              <li>• Challenging edge cases in the contract</li>
+            </ul>
           </div>
         </section>
       </main>
 
-      <Footer />
+      {/* Minimal Footer */}
+      <footer className="border-t border-border mt-16">
+        <div className="max-w-3xl mx-auto px-6 py-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-6">
+              <a
+                href="https://github.com/Rastion/rastion"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 hover:text-foreground transition-colors"
+              >
+                <Github className="h-4 w-4" />
+                GitHub
+              </a>
+              <a
+                href="https://github.com/Rastion/rastion/blob/main/docs/DMP_v0.1.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors"
+              >
+                DMP v0.1 Spec
+              </a>
+            </div>
+            <span>Apache-2.0</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
