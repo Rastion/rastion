@@ -48,8 +48,8 @@ A thin script or CI step can loop over discovered instances and invoke the exist
 ```
 for instance_dir in benchmarks/<benchmark-name>/instances/*; do
   instance_name=$(basename "$instance_dir")
-  rastion run \
-    --input "$instance_dir/input.json" \
+  decisionhub run /path/to/package \
+    --instance "$instance_dir/input.json" \
     --output "benchmarks/<benchmark-name>/results/<run-id>/$instance_name.json"
 done
 ```
