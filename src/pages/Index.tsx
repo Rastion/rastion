@@ -2,6 +2,7 @@ import CodeBlock from "@/components/ui/CodeBlock";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Github, ExternalLink, CheckCircle2, FileText, FolderTree, Terminal } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   DMPExecutionContract,
   AuthoringDMP,
@@ -9,6 +10,8 @@ import {
   BreakRastionChallenge,
   ExplicitNonGoals,
 } from "@/components/diagrams";
+import SiteLayout from "@/components/SiteLayout";
+import DmpBadge from "@/components/DmpBadge";
 
 const Index = () => {
   // Anchor proof data from anchor-proof/benchmarks/results/instance_01.json
@@ -30,7 +33,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <SiteLayout>
       {/* Hero */}
       <header className="border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-16">
@@ -58,15 +61,10 @@ const Index = () => {
                   </a>
                 </Button>
                 <Button asChild variant="outline" size="sm">
-                  <a
-                    href="https://github.com/Rastion/rastion/tree/main/core/rastion/decision_model_package/examples"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2"
-                  >
+                  <Link to="/examples" className="inline-flex items-center gap-2">
                     <FolderTree className="h-4 w-4" />
                     View examples
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -132,7 +130,7 @@ const Index = () => {
                 </li>
                 <li className="flex items-start gap-3 text-sm">
                   <CheckCircle2 className="h-4 w-4 mt-0.5 text-foreground shrink-0" />
-                  <span><span className="font-medium">Example packages</span> — knapsack, JSSP, VRPTW</span>
+                  <span><span className="font-medium">Example packages</span> — validated and executed in CI</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm">
                   <CheckCircle2 className="h-4 w-4 mt-0.5 text-foreground shrink-0" />
@@ -265,7 +263,10 @@ const Index = () => {
           <h2 className="text-lg font-semibold">DMP v0.1 Badge</h2>
           <DMPBadgeFlow />
           <p className="text-sm text-muted-foreground max-w-2xl">
-            The badge is a self-declared compliance signal. Authors verify their own packages against DMP v0.1 requirements.
+            <span className="inline-flex items-center gap-2">
+              <DmpBadge />
+              <span>The badge is a self-declared compliance signal. Authors verify their own packages against DMP v0.1 requirements.</span>
+            </span>
             <a
               href="https://github.com/Rastion/rastion/blob/main/docs/DMP_BADGE.md"
               target="_blank"
@@ -387,7 +388,7 @@ const Index = () => {
               <FolderTree className="h-5 w-5" />
               <div>
                 <p className="text-sm font-medium">Examples Directory</p>
-                <p className="text-xs text-muted-foreground">Knapsack, JSSP, VRPTW</p>
+                <p className="text-xs text-muted-foreground">Auto-discovered DMP examples</p>
               </div>
             </a>
             <a
@@ -405,41 +406,7 @@ const Index = () => {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-16">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <a
-              href="https://github.com/Rastion/rastion"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors inline-flex items-center gap-2"
-            >
-              <Github className="h-4 w-4" />
-              GitHub
-            </a>
-            <a
-              href="https://github.com/Rastion/rastion/blob/main/docs/DMP_v0.1.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors inline-flex items-center gap-2"
-            >
-              <FileText className="h-4 w-4" />
-              DMP v0.1 Spec
-            </a>
-            <a
-              href="https://github.com/Rastion/rastion/blob/main/LICENSE"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
-            >
-              Apache-2.0
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </SiteLayout>
   );
 };
 
