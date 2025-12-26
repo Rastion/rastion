@@ -1,7 +1,14 @@
 import CodeBlock from "@/components/ui/CodeBlock";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, CheckCircle2, XCircle, FileText, FolderTree, Terminal, FileJson, FileCode, BookOpen } from "lucide-react";
+import { Github, ExternalLink, CheckCircle2, FileText, FolderTree, Terminal } from "lucide-react";
+import {
+  DMPExecutionContract,
+  AuthoringDMP,
+  DMPBadgeFlow,
+  BreakRastionChallenge,
+  ExplicitNonGoals,
+} from "@/components/diagrams";
 
 const Index = () => {
   // Anchor proof data from anchor-proof/benchmarks/results/instance_01.json
@@ -16,17 +23,15 @@ const Index = () => {
     solver: {
       name: "greedy-knapsack",
       version: "1.0",
-      description: "Deterministic greedy selection by value-to-weight ratio."
     },
     metadata: {
       total_weight: 12,
-      selected_count: 3
     }
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero: Position, not pitch */}
+      {/* Hero */}
       <header className="border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <div className="grid md:grid-cols-2 gap-12 items-start">
@@ -67,9 +72,7 @@ const Index = () => {
             </div>
             <div className="space-y-3">
               <div className="font-mono text-xs text-muted-foreground mb-2">terminal</div>
-              <CodeBlock 
-                code="decisionhub run dmp/ --instance instance.json" 
-              />
+              <CodeBlock code="decisionhub run dmp/ --instance instance.json" />
               <p className="text-xs text-muted-foreground text-center font-mono">
                 Same input. Same output. Anywhere.
               </p>
@@ -97,68 +100,16 @@ const Index = () => {
           </div>
         </section>
 
+        {/* DMP Execution Contract - Core Diagram */}
+        <section className="space-y-6">
+          <h2 className="text-lg font-semibold">The Execution Contract</h2>
+          <DMPExecutionContract />
+        </section>
+
         {/* What a Decision Model Package Is */}
         <section className="space-y-6">
-          <h2 className="text-lg font-semibold">What a Decision Model Package Is</h2>
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
-            <div className="space-y-4">
-              <p className="text-muted-foreground">
-                A DMP is a self-contained directory that bundles everything needed for deterministic execution:
-              </p>
-              <Card className="font-mono text-sm">
-                <CardContent className="pt-4 pb-4 space-y-1">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <FolderTree className="h-4 w-4 shrink-0" />
-                    <span className="text-foreground font-medium">my-dmp/</span>
-                  </div>
-                  <div className="pl-6 space-y-1 text-xs">
-                    <div className="flex items-center gap-2">
-                      <FileCode className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>model.py</span>
-                      <span className="text-muted-foreground">— create_model(), solve()</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileJson className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>instance_schema.json</span>
-                      <span className="text-muted-foreground">— JSON Schema</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>solver.yaml</span>
-                      <span className="text-muted-foreground">— solver config</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileCode className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>evaluate.py</span>
-                      <span className="text-muted-foreground">— evaluate(), check_feasibility()</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>decision_card.md</span>
-                      <span className="text-muted-foreground">— human-readable</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Separation of Concerns</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3 text-sm">
-                  <div className="pb-3 border-b border-border">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">User-defined (modeling choices)</p>
-                    <p className="text-muted-foreground">Model logic, constraints, objectives, solver selection</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Rastion-defined (execution contract)</p>
-                    <p className="text-muted-foreground">Package structure, entry points, validation, output schema</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <h2 className="text-lg font-semibold">How to Create a Decision Model Package</h2>
+          <AuthoringDMP />
         </section>
 
         {/* Status: Where the Project Is Today */}
@@ -309,36 +260,47 @@ const Index = () => {
           </Card>
         </section>
 
-        {/* What Rastion Is Not Trying to Do */}
-        <section>
-          <Card className="border-dashed max-w-2xl">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">What Rastion Is Not Trying to Do</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <XCircle className="h-3.5 w-3.5 shrink-0" />
-                  Feature creep
-                </li>
-                <li className="flex items-center gap-2">
-                  <XCircle className="h-3.5 w-3.5 shrink-0" />
-                  Governance platforms
-                </li>
-                <li className="flex items-center gap-2">
-                  <XCircle className="h-3.5 w-3.5 shrink-0" />
-                  Solver wars or rankings
-                </li>
-                <li className="flex items-center gap-2">
-                  <XCircle className="h-3.5 w-3.5 shrink-0" />
-                  Benchmark scoreboards
-                </li>
-              </ul>
-              <p className="mt-4 text-sm text-foreground">
-                This restraint is intentional. The scope is deliberately narrow.
-              </p>
-            </CardContent>
-          </Card>
+        {/* DMP Badge Flow Diagram */}
+        <section className="space-y-6">
+          <h2 className="text-lg font-semibold">DMP v0.1 Badge</h2>
+          <DMPBadgeFlow />
+          <p className="text-sm text-muted-foreground max-w-2xl">
+            The badge is a self-declared compliance signal. Authors verify their own packages against DMP v0.1 requirements.
+            <a
+              href="https://github.com/Rastion/rastion/blob/main/docs/DMP_BADGE.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-1 hover:text-foreground transition-colors inline-flex items-center gap-1"
+            >
+              View badge docs <ExternalLink className="h-3 w-3" />
+            </a>
+          </p>
+        </section>
+
+        {/* Break Rastion Challenge Diagram */}
+        <section className="space-y-6">
+          <h2 className="text-lg font-semibold">Break Rastion Challenge</h2>
+          <BreakRastionChallenge />
+          <p className="text-sm text-muted-foreground max-w-2xl">
+            Adversarial testing framed as contract validation. If you can break reproducibility, that's a bug in the spec.
+            <a
+              href="https://github.com/Rastion/rastion/blob/main/docs/BREAK_RASTION.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-1 hover:text-foreground transition-colors inline-flex items-center gap-1"
+            >
+              View challenge <ExternalLink className="h-3 w-3" />
+            </a>
+          </p>
+        </section>
+
+        {/* Explicit Non-Goals Diagram */}
+        <section className="space-y-6">
+          <h2 className="text-lg font-semibold">What Rastion Is Not Trying to Do</h2>
+          <ExplicitNonGoals />
+          <p className="text-sm text-muted-foreground text-center">
+            This restraint is intentional. The scope is deliberately narrow.
+          </p>
         </section>
 
         {/* Who Rastion Is For */}
@@ -362,44 +324,6 @@ const Index = () => {
               Anyone whose results must survive outside their own environment
             </li>
           </ul>
-        </section>
-
-        {/* Social Infrastructure */}
-        <section className="space-y-6">
-          <h2 className="text-lg font-semibold text-muted-foreground">Social Infrastructure</h2>
-          <p className="text-sm text-muted-foreground max-w-2xl">
-            Lightweight, opt-in mechanisms for signaling compliance and testing the contract:
-          </p>
-          <div className="grid sm:grid-cols-2 gap-4 max-w-2xl">
-            <Card>
-              <CardContent className="pt-5 pb-4">
-                <p className="text-sm font-medium mb-1">DMP v0.1 Badge</p>
-                <p className="text-xs text-muted-foreground mb-3">Self-declared compliance signal for package authors.</p>
-                <a
-                  href="https://github.com/Rastion/rastion/blob/main/docs/DMP_BADGE.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-                >
-                  View badge docs <ExternalLink className="h-3 w-3" />
-                </a>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-5 pb-4">
-                <p className="text-sm font-medium mb-1">Break Rastion Challenge</p>
-                <p className="text-xs text-muted-foreground mb-3">Adversarial testing framed as contract validation.</p>
-                <a
-                  href="https://github.com/Rastion/rastion/blob/main/docs/BREAK_RASTION.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-                >
-                  View challenge <ExternalLink className="h-3 w-3" />
-                </a>
-              </CardContent>
-            </Card>
-          </div>
         </section>
 
         {/* Links & References */}
