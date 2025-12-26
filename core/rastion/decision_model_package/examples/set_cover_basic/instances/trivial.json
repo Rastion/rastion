@@ -1,0 +1,6 @@
+{
+  "universe": ["u1"],
+  "sets": [
+    {"id": "S1", "elements": ["u1"], "cost": 1}
+  ]
+}
