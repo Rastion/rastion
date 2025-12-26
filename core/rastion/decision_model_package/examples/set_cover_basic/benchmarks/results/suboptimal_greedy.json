@@ -1,0 +1,40 @@
+{
+  "feasible": true,
+  "metadata": {
+    "evaluation": {
+      "metrics": {
+        "covered_count": 4,
+        "selected_count": 3,
+        "total_cost": 6.0
+      },
+      "runtime": 4.524299993136083e-05
+    },
+    "runner": {
+      "evaluate_seconds": 2.810400008002034e-05,
+      "solve_seconds": 4.524299993136083e-05
+    },
+    "solve": {
+      "metrics": {},
+      "objective": 6.0,
+      "runtime_seconds": 0.0,
+      "status": "feasible"
+    }
+  },
+  "objective": 6.0,
+  "runtime_seconds": 0.009726743999976861,
+  "solution": {
+    "selected_set_ids": [
+      "S1",
+      "S2",
+      "S4"
+    ]
+  },
+  "solver": {
+    "solver": {
+      "backend": "manual",
+      "name": "set-cover-basic-greedy"
+    }
+  },
+  "status": "feasible",
+  "violations": []
+}

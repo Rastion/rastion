@@ -1,0 +1,3 @@
+solver:
+  name: "set-cover-basic-greedy"
+  backend: "manual"
