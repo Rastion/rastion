@@ -27,6 +27,13 @@ jobs:
         run: |
           set -euo pipefail
 
+          # CI policy: strict and deterministic.
+          # - Only consider top-level directories under examples/ as DMP roots.
+          # - Validate only when decision_card.md exists at the directory root.
+          # - Run decisionhub only when instance.json exists at the directory root.
+          # - Never descend into subdirectories or infer layouts.
+          # - Skip non-conforming examples with a clear log message.
+
           examples_dir="examples"
 
           if [ ! -d "$examples_dir" ]; then
@@ -35,44 +42,39 @@ jobs:
           fi
 
           for dir in "$examples_dir"/*; do
-            if [ -d "$dir" ]; then
-              package_dir="$dir"
-              instance_file="$dir/instance.json"
+            if [ ! -d "$dir" ]; then
+              continue
+            fi
 
-              if [ ! -f "$package_dir/decision_card.md" ] && [ -f "$dir/dmp/decision_card.md" ]; then
-                package_dir="$dir/dmp"
-                if [ -z "${instance_file}" ] || [ ! -f "$instance_file" ]; then
-                  instance_file="$(ls -1 "$dir"/instances/*.json 2>/dev/null | head -n 1 || true)"
-                fi
-              fi
+            decision_card="$dir/decision_card.md"
+            instance_file="$dir/instance.json"
 
-              if [ ! -f "$package_dir/decision_card.md" ]; then
-                echo "==> Skipping DMP validation; no decision_card.md for $dir"
-                continue
-              fi
+            if [ ! -f "$decision_card" ]; then
+              echo "==> Skipping $dir (no decision_card.md at root)"
+              continue
+            fi
 
-              echo "==> Validating DMP package: $package_dir"
+            echo "==> Validating DMP package: $dir"
 
-              if ! python validate_dmp.py "$package_dir"; then
-                echo "::error::DMP validation failed for package: $package_dir"
+            if ! python validate_dmp.py "$dir"; then
+              echo "::error::DMP validation failed for package: $dir"
+              exit 1
+            fi
+
+            if [ -f "$instance_file" ]; then
+              echo "==> Running decisionhub for package: $dir"
+              output_file="$(mktemp)"
+
+              if ! decisionhub run "$dir" \
+                --instance "$instance_file" \
+                --output "$output_file"; then
+                echo "::error::decisionhub run failed for package: $dir (instance: $instance_file)"
                 exit 1
               fi
 
-              if [ -n "${instance_file}" ] && [ -f "$instance_file" ]; then
-                echo "==> Running decisionhub for package: $package_dir"
-                output_file="$(mktemp)"
-
-                if ! decisionhub run "$package_dir" \
-                  --instance "$instance_file" \
-                  --output "$output_file"; then
-                  echo "::error::decisionhub run failed for package: $package_dir (instance: $instance_file)"
-                  exit 1
-                fi
-
-                echo "decisionhub output saved to $output_file"
-              else
-                echo "==> Skipping decisionhub run; no instance.json for $package_dir"
-              fi
+              echo "decisionhub output saved to $output_file"
+            else
+              echo "==> Skipping decisionhub run for $dir (no instance.json at root)"
             fi
           done
 
