@@ -36,28 +36,42 @@ jobs:
 
           for dir in "$examples_dir"/*; do
             if [ -d "$dir" ]; then
-              echo "==> Validating DMP package: $dir"
+              package_dir="$dir"
+              instance_file="$dir/instance.json"
 
-              if ! python validate_dmp.py "$dir"; then
-                echo "::error::DMP validation failed for package: $dir"
+              if [ ! -f "$package_dir/decision_card.md" ] && [ -f "$dir/dmp/decision_card.md" ]; then
+                package_dir="$dir/dmp"
+                if [ -z "${instance_file}" ] || [ ! -f "$instance_file" ]; then
+                  instance_file="$(ls -1 "$dir"/instances/*.json 2>/dev/null | head -n 1 || true)"
+                fi
+              fi
+
+              if [ ! -f "$package_dir/decision_card.md" ]; then
+                echo "==> Skipping DMP validation; no decision_card.md for $dir"
+                continue
+              fi
+
+              echo "==> Validating DMP package: $package_dir"
+
+              if ! python validate_dmp.py "$package_dir"; then
+                echo "::error::DMP validation failed for package: $package_dir"
                 exit 1
               fi
 
-              instance_file="$dir/instance.json"
-              if [ -f "$instance_file" ]; then
-                echo "==> Running decisionhub for package: $dir"
+              if [ -n "${instance_file}" ] && [ -f "$instance_file" ]; then
+                echo "==> Running decisionhub for package: $package_dir"
                 output_file="$(mktemp)"
 
-                if ! decisionhub run "$dir" \
+                if ! decisionhub run "$package_dir" \
                   --instance "$instance_file" \
                   --output "$output_file"; then
-                  echo "::error::decisionhub run failed for package: $dir (instance: $instance_file)"
+                  echo "::error::decisionhub run failed for package: $package_dir (instance: $instance_file)"
                   exit 1
                 fi
 
                 echo "decisionhub output saved to $output_file"
               else
-                echo "==> Skipping decisionhub run; no instance.json for $dir"
+                echo "==> Skipping decisionhub run; no instance.json for $package_dir"
               fi
             fi
           done
