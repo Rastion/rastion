@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Directory containing this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-python "${ROOT_DIR}/../validate_dmp.py" "${ROOT_DIR}/dmp/"
+# Anchor-proof root (examples/anchor-proof)
+ANCHOR_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-decisionhub run "${ROOT_DIR}/dmp/" \
-  --instance "${ROOT_DIR}/instances/instance_01.json" \
-  --output "${ROOT_DIR}/benchmarks/results/instance_01.json"
+# Repo root
+REPO_ROOT="$(cd "$ANCHOR_ROOT/../.." && pwd)"
 
-decisionhub run-all "${ROOT_DIR}/dmp/" \
-  --instances "${ROOT_DIR}/instances/" \
-  --output "${ROOT_DIR}/benchmarks/results/"
+python "$REPO_ROOT/validate_dmp.py" "$ANCHOR_ROOT/dmp/"
+
+decisionhub run "$ANCHOR_ROOT/dmp/" \
+  --instance "$ANCHOR_ROOT/instances/instance_01.json" \
+  --output "$ANCHOR_ROOT/benchmarks/results/instance_01.json"
+
+decisionhub run-all "$ANCHOR_ROOT/dmp/" \
+  --instances "$ANCHOR_ROOT/instances/" \
+  --output "$ANCHOR_ROOT/benchmarks/results/"
