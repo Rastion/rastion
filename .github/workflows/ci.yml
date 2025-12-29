@@ -7,6 +7,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +26,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          examples_dir="core/rastion/decision_model_package/examples"
+
+          examples_dir="examples"
 
           if [ ! -d "$examples_dir" ]; then
             echo "::error::Examples directory not found: $examples_dir"
@@ -35,6 +37,7 @@ jobs:
           for dir in "$examples_dir"/*; do
             if [ -d "$dir" ]; then
               echo "==> Validating DMP package: $dir"
+
               if ! python validate_dmp.py "$dir"; then
                 echo "::error::DMP validation failed for package: $dir"
                 exit 1
@@ -44,10 +47,14 @@ jobs:
               if [ -f "$instance_file" ]; then
                 echo "==> Running decisionhub for package: $dir"
                 output_file="$(mktemp)"
-                if ! decisionhub run "$dir" --instance "$instance_file" --output "$output_file"; then
+
+                if ! decisionhub run "$dir" \
+                  --instance "$instance_file" \
+                  --output "$output_file"; then
                   echo "::error::decisionhub run failed for package: $dir (instance: $instance_file)"
                   exit 1
                 fi
+
                 echo "decisionhub output saved to $output_file"
               else
                 echo "==> Skipping decisionhub run; no instance.json for $dir"
@@ -59,12 +66,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bash anchor-proof/scripts/run_all.sh
+          bash examples/anchor-proof/scripts/run_all.sh
 
       - name: CI summary
         if: always()
         run: |
           echo "## Rastion CI Summary" >> "$GITHUB_STEP_SUMMARY"
           echo "- Python version: 3.10" >> "$GITHUB_STEP_SUMMARY"
-          echo "- DMP examples validated and executed" >> "$GITHUB_STEP_SUMMARY"
+          echo "- DMP examples validated and executed from /examples" >> "$GITHUB_STEP_SUMMARY"
           echo "- Anchor-proof suite executed" >> "$GITHUB_STEP_SUMMARY"
