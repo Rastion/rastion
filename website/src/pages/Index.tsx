@@ -268,7 +268,7 @@ const Index = () => {
               <span>The badge is a self-declared compliance signal. Authors verify their own packages against DMP v0.1 requirements.</span>
             </span>
             <a
-              href="https://github.com/Rastion/rastion/blob/main/docs/DMP_BADGE.md"
+              href="https://github.com/Rastion/rastion/blob/main/docs/conventions.md#dmp-v01--executable--auditable-badge"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-1 hover:text-foreground transition-colors inline-flex items-center gap-1"
@@ -285,7 +285,7 @@ const Index = () => {
           <p className="text-sm text-muted-foreground max-w-2xl">
             Adversarial testing framed as contract validation. If you can break reproducibility, that's a bug in the spec.
             <a
-              href="https://github.com/Rastion/rastion/blob/main/docs/BREAK_RASTION.md"
+              href="https://github.com/Rastion/rastion/blob/main/website/content/narrative/BREAK_RASTION.md"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-1 hover:text-foreground transition-colors inline-flex items-center gap-1"
@@ -356,7 +356,7 @@ const Index = () => {
               </div>
             </a>
             <a
-              href="https://github.com/Rastion/rastion/blob/main/docs/dmp_v0.1_freeze_memo.md"
+              href="https://github.com/Rastion/rastion/blob/main/website/content/narrative/dmp_v0.1_freeze_memo.md"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 border border-border rounded-lg hover:bg-muted transition-colors"
@@ -392,7 +392,7 @@ const Index = () => {
               </div>
             </a>
             <a
-              href="https://github.com/Rastion/rastion/blob/main/docs/BREAK_RASTION.md"
+              href="https://github.com/Rastion/rastion/blob/main/website/content/narrative/BREAK_RASTION.md"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 border border-border rounded-lg hover:bg-muted transition-colors"

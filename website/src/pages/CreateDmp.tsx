@@ -27,7 +27,7 @@ const CreateDmp = () => {
                 <li>No internal knowledge required.</li>
               </ul>
               <a
-                href="https://github.com/Rastion/rastion/blob/main/docs/create-your-first-dmp.md"
+                href="https://github.com/Rastion/rastion/blob/main/website/content/narrative/create-your-first-dmp.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
@@ -51,12 +51,12 @@ const CreateDmp = () => {
                 <li>Write decision_card.md.</li>
               </ul>
               <a
-                href="https://github.com/Rastion/rastion/blob/main/docs/authoring_a_dmp.md"
+                href="https://github.com/Rastion/rastion/blob/main/docs/authoring-checklist.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
               >
-                Read authoring_a_dmp.md <ExternalLink className="h-3 w-3" />
+                Read authoring-checklist.md <ExternalLink className="h-3 w-3" />
               </a>
             </CardContent>
           </Card>
@@ -92,12 +92,12 @@ const CreateDmp = () => {
                 <li>No submission or approval process.</li>
               </ul>
               <a
-                href="https://github.com/Rastion/rastion/blob/main/docs/DMP_BADGE.md"
+                href="https://github.com/Rastion/rastion/blob/main/docs/conventions.md#dmp-v01--executable--auditable-badge"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
               >
-                Read DMP_BADGE.md <ExternalLink className="h-3 w-3" />
+                Read badge convention <ExternalLink className="h-3 w-3" />
               </a>
             </CardContent>
           </Card>
