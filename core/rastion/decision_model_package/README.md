@@ -20,8 +20,8 @@ All fields are stable in DMP v0.1. New fields may be added under metadata only.
 ### Example (mock VRPTW package)
 
 ```sh
-decisionhub run core/rastion/decision_model_package/examples/vrptw_or_tools_basic \
-  --instance core/rastion/decision_model_package/examples/vrptw_or_tools_basic/instance.json \
+decisionhub run examples/vrptw_or_tools_basic \
+  --instance examples/vrptw_or_tools_basic/instance.json \
   --output /tmp/result.json
 ```
 

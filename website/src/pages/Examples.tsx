@@ -68,7 +68,7 @@ const Examples = () => {
           <div className="flex flex-wrap items-center gap-3">
             <h2 className="text-lg font-semibold">Example DMPs</h2>
             <span className="text-xs text-muted-foreground">
-              Auto-discovered from core/rastion/decision_model_package/examples
+              Auto-discovered from examples
             </span>
           </div>
           <div className="grid gap-6 md:grid-cols-2">

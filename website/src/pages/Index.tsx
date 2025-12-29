@@ -380,7 +380,7 @@ const Index = () => {
               </div>
             </a>
             <a
-              href="https://github.com/Rastion/rastion/tree/main/core/rastion/decision_model_package/examples"
+              href="https://github.com/Rastion/rastion/tree/main/examples"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 border border-border rounded-lg hover:bg-muted transition-colors"

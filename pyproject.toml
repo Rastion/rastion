@@ -24,5 +24,4 @@ where = ["core"]
   "schemas/*.json",
   "schemas/*.yaml",
   "schemas/*.yml",
-  "examples/**/*",
 ]
