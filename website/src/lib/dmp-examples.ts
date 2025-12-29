@@ -10,7 +10,7 @@ export type DmpExample = {
 };
 
 const decisionCardModules = import.meta.glob(
-  "/core/rastion/decision_model_package/examples/*/decision_card.md",
+  "/examples/*/decision_card.md",
   { query: "?raw", import: "default", eager: true },
 );
 

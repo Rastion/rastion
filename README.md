@@ -38,7 +38,7 @@ Python requirement: 3.10+
 
 ## Quick Start
 
-Use the `decisionhub` CLI to run a DMP package. See [example packages](core/rastion/decision_model_package/examples) and the [runner reference](core/rastion/decision_model_package/README.md) for command details.
+Use the `decisionhub` CLI to run a DMP package. See [example packages](examples) and the [runner reference](core/rastion/decision_model_package/README.md) for command details.
 
 ## Output Format
 
@@ -46,8 +46,8 @@ Use the `decisionhub` CLI to run a DMP package. See [example packages](core/rast
 
 ## Included Examples
 
-- [VRPTW (routing)](core/rastion/decision_model_package/examples/vrptw_or_tools_basic)
-- [Knapsack (selection)](core/rastion/decision_model_package/examples/knapsack_basic)
+- [VRPTW (routing)](examples/vrptw_or_tools_basic)
+- [Knapsack (selection)](examples/knapsack_basic)
 
 ## Project Status
 

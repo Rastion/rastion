@@ -21,7 +21,7 @@ const Contribute = () => {
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               <ul className="list-disc pl-5 space-y-1">
                 <li>Fork the repository.</li>
-                <li>Add a new DMP under core/rastion/decision_model_package/examples/.</li>
+                <li>Add a new DMP under examples/.</li>
                 <li>Ensure validate_dmp.py and decisionhub run-all pass.</li>
                 <li>Open a pull request.</li>
               </ul>
