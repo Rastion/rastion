@@ -43,7 +43,7 @@ const Contribute = () => {
                 <li>Failures are treated as contract bugs.</li>
               </ul>
               <a
-                href="https://github.com/Rastion/rastion/blob/main/docs/BREAK_RASTION.md"
+                href="https://github.com/Rastion/rastion/blob/main/website/content/narrative/BREAK_RASTION.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"

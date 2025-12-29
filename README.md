@@ -16,12 +16,14 @@ Rastion is an execution standard and Python CLI for Decision Model Packages as d
 
 ## Decision Model Package (DMP)
 
-A Decision Model Package is a self-contained directory that bundles model code, input schemas, solver configuration, and evaluation logic. For the required files and interfaces, see the [DMP v0.1 specification](docs/DMP_v0.1.md) and the [authoring checklist](docs/authoring_a_dmp.md).
+A Decision Model Package is a self-contained directory that bundles model code, input schemas, solver configuration, and evaluation logic. For the required files and interfaces, see the [DMP v0.1 specification](docs/DMP_v0.1.md) and the [authoring checklist](docs/authoring-checklist.md).
 
 ## Documentation
 
-- [DMP v0.1 — Executable & Auditable](docs/DMP_BADGE.md)
-- [Break Rastion: DMP v0.1](docs/BREAK_RASTION.md)
+- [DMP v0.1 specification](docs/DMP_v0.1.md)
+- [Authoring checklist](docs/authoring-checklist.md)
+- [Non-normative conventions](docs/conventions.md)
+- Narrative context and motivation live in the website (see `website/`).
 
 ## Installation
 
